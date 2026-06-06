@@ -1,2 +1,22 @@
 # stream-mutator
-A learning exercise to take an input http stream, and modify it somehow without buffering the entire request.
+
+A personal challenge to learn Rust streams by hand.
+
+## What
+
+Take an incoming HTTP request as a byte stream, parse and modify it on the fly, then stream it back out — without ever buffering the full request in memory.
+
+## Why
+
+Why not. Just want to stay in touch with writing code on my own. also trying to understand how Rusts stream model works by actually building something.
+
+## Constraints
+
+- No buffering the full request in memory at any point.
+- No AI writing code for me.
+- References: docs, google, stackoverflow if im feeling whimsical. 
+- (Is just asking AI questions cheating? I'll avoid it as much as possible just in case)
+
+## Observations
+
+It's a streaming HTTP proxy at its core, even if that was not the original intention.
