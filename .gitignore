@@ -24,3 +24,7 @@ target
 # Added by cargo
 
 /target
+
+# Python stuff for the test server
+
+/.venv
