@@ -20,3 +20,8 @@ Why not. Just want to stay in touch with writing code on my own. also trying to 
 ## Observations
 
 It's a streaming HTTP proxy at its core, even if that was not the original intention.
+
+## References
+
+- [RFC 9110 — HTTP Semantics](https://www.rfc-editor.org/rfc/rfc9110)
+- [RFC 9112 — HTTP/1.1](https://www.rfc-editor.org/rfc/rfc9112)
