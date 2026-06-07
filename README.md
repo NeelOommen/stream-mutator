@@ -23,5 +23,6 @@ It's a streaming HTTP proxy at its core, even if that was not the original inten
 
 ## References
 
-- [RFC 9110 — HTTP Semantics](https://www.rfc-editor.org/rfc/rfc9110)
-- [RFC 9112 — HTTP/1.1](https://www.rfc-editor.org/rfc/rfc9112)
+- [RFC 9110 — HTTP Semantics](https://www.rfc-editor.org/rfc/rfc9110): HTTP 1.0 Message format and older
+- [RFC 9112 — HTTP/1.1](https://www.rfc-editor.org/rfc/rfc9112): HTTP 1.1 Message formats
+- [tokio::io::copy](https://dtantsur.github.io/rust-openstack/tokio/io/fn.copy.html): how tokio moves bytes between streams transparently today — baseline for writing my own interceptor that modifies in flight
