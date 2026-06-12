@@ -2,7 +2,7 @@ use tokio::net::{TcpListener, TcpStream};
 
 #[tokio::main]
 async fn main() {
-    let listener = TcpListener::bind("127.0.0.1:8080")
+    let listener = TcpListener::bind("127.0.0.1:8081")
         .await
         .expect("Could not listen for connections");
 
@@ -24,9 +24,20 @@ async fn handle_connection(mut stream: TcpStream) -> Result<(),std::io::Error> {
     let (mut client_reader, mut client_writer) = stream.into_split();
     let (mut server_reader, mut server_writer) = upstream.into_split();
 
-    tokio::try_join!(
-        tokio::io::copy(&mut client_reader, &mut server_writer), //pass client data to server
-        tokio::io::copy(&mut server_reader, &mut client_writer), //pass server response to client
+    let s1 = tokio::spawn(async move {
+        let r = tokio::io::copy(&mut client_reader, &mut server_writer).await;
+        println!("Client read: {:?}", r);
+        r
+    });
+
+    let s2 = tokio::spawn(async move {
+        let r = tokio::io::copy(&mut server_reader, &mut client_writer).await;
+        println!("Server read: {:?}", r);
+        r
+    });
+
+    let _ = tokio::try_join!(
+        s1, s2, //pass server response to client
     )?;
 
     Ok(())
