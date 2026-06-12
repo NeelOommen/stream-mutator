@@ -28,3 +28,4 @@ It's a streaming HTTP proxy at its core, even if that was not the original inten
 - [tokio::io::copy](https://dtantsur.github.io/rust-openstack/tokio/io/fn.copy.html): how tokio moves bytes between streams transparently today — baseline for writing my own interceptor that modifies in flight
 - [tokio::net::TcpListener](https://docs.rs/tokio/latest/tokio/net/struct.TcpListener.html): accept incoming TCP connections
 - [tokio_stream::wrappers::TcpListenerStream](https://docs.rs/tokio-stream/0.1.18/tokio_stream/wrappers/struct.TcpListenerStream.html): wrap listener as stream of incoming connections
+- [dyn-compatibility](https://doc.rust-lang.org/reference/items/traits.html#dyn-compatibility): rules for when trait can be made into `dyn Trait` object

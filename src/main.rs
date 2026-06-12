@@ -1,44 +1,41 @@
+mod pipe_handler;
+mod default_pipe_handler;
+mod pipe_mode;
+mod default_metric_pipe_handler;
+
 use tokio::net::{TcpListener, TcpStream};
+use crate::default_metric_pipe_handler::DefaultMetricPipeHandler;
+use crate::pipe_handler::PipeHandler;
+use crate::pipe_mode::PipeMode;
+use crate::default_pipe_handler::DefaultPipeHandler;
+use crate::pipe_mode::PipeMode::*;
 
 #[tokio::main]
 async fn main() {
+    let mode = DefaultMetricMode;
+
     let listener = TcpListener::bind("127.0.0.1:8081")
         .await
         .expect("Could not listen for connections");
 
     loop{
         let (stream, socket) = listener.accept().await.unwrap();
-        let result = handle_connection(stream);
 
-        tokio::spawn(async move {
-            if let Err(e) = result.await {
-                eprintln!("Error: {}", e);
-            }
-        });
+        let _ = handle_connection(mode, stream).await;
     }
 }
 
-async fn handle_connection(mut stream: TcpStream) -> Result<(),std::io::Error> {
-    let upstream = TcpStream::connect("127.0.0.1:8080").await.unwrap();
+async fn handle_connection(mode: PipeMode, stream: TcpStream) {
+    let target: String = String::from("127.0.0.1:8080");
+    let task = tokio::spawn(async move {
+        let result = match(mode){
+            DefaultMode =>  DefaultPipeHandler::handle_connection(stream, target).await,
+            DefaultMetricMode =>  DefaultMetricPipeHandler::handle_connection(stream, target).await,
+        };
 
-    let (mut client_reader, mut client_writer) = stream.into_split();
-    let (mut server_reader, mut server_writer) = upstream.into_split();
-
-    let s1 = tokio::spawn(async move {
-        let r = tokio::io::copy(&mut client_reader, &mut server_writer).await;
-        println!("Client read: {:?}", r);
-        r
+        if let Err(e) = result {
+            eprintln!("Error: {}", e);
+        }
     });
-
-    let s2 = tokio::spawn(async move {
-        let r = tokio::io::copy(&mut server_reader, &mut client_writer).await;
-        println!("Server read: {:?}", r);
-        r
-    });
-
-    let _ = tokio::try_join!(
-        s1, s2, //pass server response to client
-    )?;
-
-    Ok(())
+    let _ = task.await;
 }
