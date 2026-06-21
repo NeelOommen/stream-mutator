@@ -1,0 +1,16 @@
+Raw: POST /some/request HTTP/1.1\r\nAccept: application/json, text/plain, */*\r\nContent-Type: application/json\r\nUser-Agent: bruno-runtime/3.4.2\r\nrequest-start-time: 1782051094054\r\nContent-Length: 42\r\nAccept-Encoding: gzip, compress, deflate, br\r\nHost: localhost:8081\r\nConnection: keep-alive\r\n\r\n{\n  \"key1\": \"value1\",\n  \"key2\": \"value2\"\n}C->S: Error reading from client: Kind(WouldBlock)HTTP/1.0 200 OK\r\nServer: BaseHTTP/0.6 Python/3.14.5\r\nDate: Sun, 21 Jun 2026 14:11:34 GMT\r\nContent-Type: application/json\r\n\r\n{\"status\": \"ok\"}
+
+Formatted Request for my sanity:
+POST /some/request HTTP/1.1\r\n
+Accept: application/json, text/plain, */*\r\n
+Content-Type: application/json\r\n
+User-Agent: bruno-runtime/3.4.2\r\n
+request-start-time: 1782051094054\r\n
+Content-Length: 42\r\n
+Accept-Encoding: gzip, compress, deflate, br\r\n
+Host: localhost:8081\r\n
+Connection: keep-alive\r\n\r\n
+{
+    "key1": "value1",
+    "key2": "value2"
+}
