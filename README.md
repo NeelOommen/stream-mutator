@@ -31,3 +31,4 @@ It's a streaming HTTP proxy at its core, even if that was not the original inten
 - [dyn-compatibility](https://doc.rust-lang.org/reference/items/traits.html#dyn-compatibility): rules for when trait can be made into `dyn Trait` object
 - [std::sync::mpsc](https://doc.rust-lang.org/std/sync/mpsc/index.html): mpsc channel module docs
 - [std::sync::mpsc::channel](https://doc.rust-lang.org/std/sync/mpsc/fn.channel.html): channel constructor — bounded backpressure for sink between two `copy()` calls
+- [State machines](https://hoverbear.org/blog/rust-state-machine-pattern/): Intro to state machine patterns in rust
