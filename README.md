@@ -21,6 +21,14 @@ Why not. Just want to stay in touch with writing code on my own. also trying to 
 
 It's a streaming HTTP proxy at its core, even if that was not the original intention.
 
+## Demo modes:
+Update the 'mode' variable in main.rs to one of the values from 'pipe_mode.rs':
+1. Default Mode: the most basic proxy 'pipe'. Does nothing, just passes the input stream to the output, no logging even.
+2. Default Metric Mode: logs the number of bytes read, no other modifications
+3. Raw Response logging mode: Slightly misnamed, logs the read buffer as a UTF-8 string chunk. Useful to see what the data passing through the pipe actually is.
+4. Header Injection Mode: Uses a state machine to inject a header into the request passing through the pipe. Never buffers more than 1 byte. Achieves the main goal mentioned here, modification with no/minimal buffering.
+5. Fast Header Injection Mode: Same as header injection mode, but uses a 256 byte buffer, to avoid the overhead of a syscall for each byte passing through. (Speedup is from buffer processing time >>> syscall time).
+
 ## References
 
 - [RFC 9110 — HTTP Semantics](https://www.rfc-editor.org/rfc/rfc9110): HTTP 1.0 Message format and older
