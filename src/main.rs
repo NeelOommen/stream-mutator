@@ -12,13 +12,14 @@ use crate::default_metric_pipe_handler::DefaultMetricPipeHandler;
 use crate::pipe_handler::PipeHandler;
 use crate::pipe_mode::PipeMode;
 use crate::default_pipe_handler::DefaultPipeHandler;
+use crate::fast_header_injection_handler::FastHeaderInjectingPipeHandler;
 use crate::header_adder_pipe_handler::HeaderInjectingPipeHandler;
 use crate::pipe_mode::PipeMode::*;
 use crate::raw_request_logging_pipe_handler::RawRequestLoggingPipeHandler;
 
 #[tokio::main]
 async fn main() {
-    let mode = HeaderInjectionMode;
+    let mode = FastHeaderInjectionMode;
 
     let listener = TcpListener::bind("127.0.0.1:8081")
         .await
@@ -39,6 +40,7 @@ async fn handle_connection(mode: PipeMode, stream: TcpStream) {
             DefaultMetricMode =>  DefaultMetricPipeHandler::handle_connection(stream, target).await,
             RawResponseLoggingMode => RawRequestLoggingPipeHandler::handle_connection(stream, target).await,
             HeaderInjectionMode => HeaderInjectingPipeHandler::handle_connection(stream, target).await,
+            FastHeaderInjectionMode => FastHeaderInjectingPipeHandler::handle_connection(stream, target).await,
         };
 
         if let Err(e) = result {
