@@ -4,6 +4,8 @@ mod pipe_mode;
 mod default_metric_pipe_handler;
 mod raw_request_logging_pipe_handler;
 mod header_adder_pipe_handler;
+mod fast_header_injection_handler;
+mod header_injection_state_machine;
 
 use tokio::net::{TcpListener, TcpStream};
 use crate::default_metric_pipe_handler::DefaultMetricPipeHandler;
