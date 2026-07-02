@@ -40,3 +40,5 @@ Update the 'mode' variable in main.rs to one of the values from 'pipe_mode.rs':
 - [std::sync::mpsc](https://doc.rust-lang.org/std/sync/mpsc/index.html): mpsc channel module docs
 - [std::sync::mpsc::channel](https://doc.rust-lang.org/std/sync/mpsc/fn.channel.html): channel constructor — bounded backpressure for sink between two `copy()` calls
 - [State machines](https://hoverbear.org/blog/rust-state-machine-pattern/): Intro to state machine patterns in rust
+- [RFC 2046 §5.1 — MIME Multipart](https://www.rfc-editor.org/rfc/rfc2046#section-5.1): Multipart format — boundary syntax, delimiter format, terminal delimiter
+- [RFC 7578 — multipart/form-data](https://www.rfc-editor.org/rfc/rfc7578): HTTP multipart form data — `Content-Disposition` per part, field naming
