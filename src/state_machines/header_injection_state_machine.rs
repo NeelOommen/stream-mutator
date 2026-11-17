@@ -32,19 +32,19 @@ impl TransitionState for States{
 }
 
 
-pub struct HttpMachine {
+pub struct HeaderInjectionStateMachine {
     state: States,
 }
 
-impl HttpMachine {
-    pub fn new() -> HttpMachine {
-        HttpMachine{
+impl HeaderInjectionStateMachine {
+    pub fn new() -> HeaderInjectionStateMachine {
+        HeaderInjectionStateMachine{
             state: States::PEOH(PreEndOfHeaders{}),
         }
     }
 }
 
-impl StateMachine for HttpMachine {
+impl StateMachine for HeaderInjectionStateMachine {
     fn consume_byte(&mut self, input: u8) -> Vec<u8> {
         let transition_result = self.state.transition(input);
         self.state = transition_result.next_state;

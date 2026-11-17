@@ -1,10 +1,7 @@
 mod pipe_handler;
-mod default_pipe_handler;
 mod pipe_mode;
 mod default_metric_pipe_handler;
 mod raw_request_logging_pipe_handler;
-mod header_adder_pipe_handler;
-mod fast_header_injection_handler;
 pub mod state_machines;
 pub mod state_machine_trait;
 
@@ -12,14 +9,15 @@ use std::io::ErrorKind;
 use tokio::net::{TcpListener, TcpStream};
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use crate::pipe_mode::PipeMode;
-use state_machines::header_injection_state_machine::HttpMachine;
 use crate::pipe_mode::PipeMode::*;
 use crate::state_machine_trait::StateMachine;
+use crate::state_machines::default_state_machine::DefaultStateMachine;
+use crate::state_machines::header_injection_state_machine::HeaderInjectionStateMachine;
 
 #[tokio::main]
 async fn main() {
-    let cts_mode = FastHeaderInjectionMode;
-    let stc_mode = FastHeaderInjectionMode;
+    let cts_mode = HeaderInjectionMode;
+    let stc_mode = HeaderInjectionMode;
 
     let listener = TcpListener::bind("127.0.0.1:8081")
         .await
@@ -93,5 +91,8 @@ fn process_buffer(machine: &mut Box<dyn StateMachine>, buffer: &[u8; 256], read_
 }
 
 fn get_required_state_machine(mode: PipeMode) -> Box<dyn StateMachine> {
-    Box::new(HttpMachine::new())
+    match mode {
+        DefaultMode | DefaultMetricMode | RawResponseLoggingMode => Box::new(DefaultStateMachine),
+        HeaderInjectionMode => Box::new(HeaderInjectionStateMachine::new()),
+    }
 }
