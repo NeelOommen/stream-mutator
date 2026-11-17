@@ -1,4 +1,4 @@
-use crate::state_machine_trait::StateMachine;
+use crate::pipe_handler_trait::{PipeHandler};
 
 //consuming state trait
 trait TransitionState{
@@ -44,7 +44,7 @@ impl HeaderInjectionStateMachine {
     }
 }
 
-impl StateMachine for HeaderInjectionStateMachine {
+impl PipeHandler for HeaderInjectionStateMachine {
     fn consume_byte(&mut self, input: u8) -> Vec<u8> {
         let transition_result = self.state.transition(input);
         self.state = transition_result.next_state;

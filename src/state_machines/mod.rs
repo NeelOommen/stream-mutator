@@ -1,2 +1,3 @@
 pub mod header_injection_state_machine;
 pub mod default_state_machine;
+pub mod byte_read_metric_state_machine;

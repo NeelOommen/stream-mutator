@@ -1,16 +1,13 @@
-mod pipe_handler;
 mod pipe_mode;
-mod default_metric_pipe_handler;
-mod raw_request_logging_pipe_handler;
 pub mod state_machines;
-pub mod state_machine_trait;
+pub mod pipe_handler_trait;
 
 use std::io::ErrorKind;
 use tokio::net::{TcpListener, TcpStream};
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
+use crate::pipe_handler_trait::PipeHandler;
 use crate::pipe_mode::PipeMode;
 use crate::pipe_mode::PipeMode::*;
-use crate::state_machine_trait::StateMachine;
 use crate::state_machines::default_state_machine::DefaultStateMachine;
 use crate::state_machines::header_injection_state_machine::HeaderInjectionStateMachine;
 
@@ -80,7 +77,7 @@ async fn state_machine_pipe_handler(reader: OwnedReadHalf, writer: OwnedWriteHal
     }
 }
 
-fn process_buffer(machine: &mut Box<dyn StateMachine>, buffer: &[u8; 256], read_size: usize) -> Vec<u8> {
+fn process_buffer(machine: &mut Box<dyn PipeHandler>, buffer: &[u8; 256], read_size: usize) -> Vec<u8> {
     let mut i: usize = 0;
     let mut output: Vec<u8> = Vec::with_capacity(read_size); //minimum required capacity of read size
     while i < read_size {
@@ -90,7 +87,7 @@ fn process_buffer(machine: &mut Box<dyn StateMachine>, buffer: &[u8; 256], read_
     output
 }
 
-fn get_required_state_machine(mode: PipeMode) -> Box<dyn StateMachine> {
+fn get_required_state_machine(mode: PipeMode) -> Box<dyn PipeHandler> {
     match mode {
         DefaultMode | DefaultMetricMode | RawResponseLoggingMode => Box::new(DefaultStateMachine),
         HeaderInjectionMode => Box::new(HeaderInjectionStateMachine::new()),
