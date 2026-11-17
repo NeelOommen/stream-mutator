@@ -1,5 +1,5 @@
 mod pipe_mode;
-pub mod state_machines;
+pub mod pipes;
 pub mod pipe_handler_trait;
 
 use std::io::ErrorKind;
@@ -8,8 +8,10 @@ use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use crate::pipe_handler_trait::PipeHandler;
 use crate::pipe_mode::PipeMode;
 use crate::pipe_mode::PipeMode::*;
-use crate::state_machines::default_state_machine::DefaultStateMachine;
-use crate::state_machines::header_injection_state_machine::HeaderInjectionStateMachine;
+use crate::pipes::byte_read_metric_pipe::ByteMetricPipeHandler;
+use crate::pipes::default_pipe::DefaultStateMachine;
+use crate::pipes::header_injection_pipe::HeaderInjectionStateMachine;
+use crate::pipes::raw_response_pipe::RawLoggingPipe;
 
 #[tokio::main]
 async fn main() {
@@ -89,7 +91,9 @@ fn process_buffer(machine: &mut Box<dyn PipeHandler>, buffer: &[u8; 256], read_s
 
 fn get_required_state_machine(mode: PipeMode) -> Box<dyn PipeHandler> {
     match mode {
-        DefaultMode | DefaultMetricMode | RawResponseLoggingMode => Box::new(DefaultStateMachine),
+        DefaultMode => Box::new(DefaultStateMachine::new()),
+        RawResponseLoggingMode => Box::new(RawLoggingPipe::new()),
+        DefaultMetricMode => Box::new(ByteMetricPipeHandler::new()),
         HeaderInjectionMode => Box::new(HeaderInjectionStateMachine::new()),
     }
 }
