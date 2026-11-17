@@ -3,6 +3,5 @@ pub enum PipeMode{
     DefaultMode,
     DefaultMetricMode,
     RawResponseLoggingMode,
-    HeaderInjectionMode,
     FastHeaderInjectionMode,
 }

@@ -1,3 +1,5 @@
+use crate::state_machine_trait::StateMachine;
+
 //consuming state trait
 trait TransitionState{
     fn transition(&self, input: u8) -> TransitionResult;
@@ -40,8 +42,10 @@ impl HttpMachine {
             state: States::PEOH(PreEndOfHeaders{}),
         }
     }
+}
 
-    pub fn consume_byte(&mut self, input: u8) -> Vec<u8> {
+impl StateMachine for HttpMachine {
+    fn consume_byte(&mut self, input: u8) -> Vec<u8> {
         let transition_result = self.state.transition(input);
         self.state = transition_result.next_state;
         transition_result.output

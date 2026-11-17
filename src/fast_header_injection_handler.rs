@@ -1,8 +1,9 @@
 use std::io::{Error, ErrorKind};
 use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
-use crate::header_injection_state_machine::HttpMachine;
+use crate::state_machines::header_injection_state_machine::HttpMachine;
 use crate::pipe_handler::PipeHandler;
+use crate::state_machine_trait::StateMachine;
 
 pub struct FastHeaderInjectingPipeHandler;
 
