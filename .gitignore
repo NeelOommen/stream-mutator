@@ -28,3 +28,7 @@ target
 # Python stuff for the test server
 
 /.venv
+
+.idea
+
+Cargo.lock
